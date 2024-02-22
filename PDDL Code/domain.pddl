@@ -22,7 +22,6 @@
         ; One predicate given for free!
         (hero_at ?loc - location)
         (hero_has_key ?k - key)
-        (hero_move_to ?to)
         (key_at ?k - key ?loc - location)
         (key_colour ?k - key ?col - colour)
         (multi_use_key ?k - key)
@@ -33,6 +32,7 @@
         (corridor_connected_to ?cor - corridor ?loc - location)
         (corridor_connection ?cor - corridor ?from ?to - location)
         (corridor_locked ?cor - corridor ?col - colour)
+        (corridor_locked_state ?cor)
         (corridor_collapsed ?cor - corridor)
         (corridor_risky ?cor)
         
@@ -51,9 +51,8 @@
         :parameters (?from ?to - location ?cor - corridor)
 
         :precondition (and (hero_at ?from)
-                           (hero_move_to ?to)
                            (corridor_connection ?cor ?from ?to)
-                           (not (corridor_locked ?cor))
+                           (not (corridor_locked_state ?cor))
 
         )
 
@@ -79,14 +78,14 @@
 
         :parameters (?loc - location ?k - key)
 
-        :precondition (and (hero-at ?loc)
-                           (key-at ?k ?loc)
+        :precondition (and (hero_at ?loc)
+                           (key_at ?k ?loc)
                            (not (hero_has_key ?k))
                            (not (messy_room ?loc))
         )
 
         :effect (and (hero_has_key ?key)
-                     (not (key_at ?loc))
+                     (not (key_at ?k ?loc))
 
         )
     )
@@ -105,7 +104,7 @@
         )
 
         :effect (and (not (hero_has_key ?k))
-                     (key_at ?loc)
+                     (key_at ?k ?loc)
 
         )
     )
@@ -133,6 +132,7 @@
         )
 
         :effect (and (not (corridor_locked ?cor ?col))
+                     (not (corridor_locked_state ?cor))
                      (when (two_use_key ?k)
                         (and (not (two_use_key ?k))
                              (one_use_key ?k)
@@ -159,7 +159,7 @@
                       (messy_room ?loc)
         )
 
-        :effect ((not (messy_room ?loc))
+        :effect (not (messy_room ?loc)
 
         )
     )
