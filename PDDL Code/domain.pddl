@@ -20,10 +20,23 @@
     (:predicates
 
         ; One predicate given for free!
-        (hero-at ?loc - location)
-
-        ; IMPLEMENT ME
-
+        (hero_at ?loc - location)
+        (hero_has_key ?k - key)
+        (hero_move_to ?to)
+        (key_at ?k - key ?loc - location)
+        (key_uses_left ?k - key)
+        (key_colour ?k - key ?col - colour)
+        (multi_use_key ?k - key)
+        (two_use_key ?k - key)
+        (one_use_key ?k - key)
+        (useless_key ?k - key)
+        (messy_room ?loc - location)
+        (corridor_connected_to ?cor - corridor ?loc - location)
+        (corridor_connection ?cor - corridor ?from ?to - location)
+        (corridor_locked ?cor - corridor ?col - colour)
+        (corridor_collapsed ?cor - corridor)
+        (corridor_risky ?cor)
+        
     )
 
     ; IMPORTANT: You should not change/add/remove the action names or parameters
@@ -38,15 +51,21 @@
 
         :parameters (?from ?to - location ?cor - corridor)
 
-        :precondition (and
-
-            ; IMPLEMENT ME
+        :precondition (and (hero_at ?from)
+                           (hero_move_to ?to)
+                           (corridor_connection ?cor ?from ?to)
+                           (not (corridor_locked ?cor))
 
         )
 
-        :effect (and
-
-            ; IMPLEMENT ME
+        :effect (and (not (hero_at ?from))
+                     (hero_at ?to)
+                (when (corridor_risky ?cor)
+                    (and (corridor_collapsed ?cor)
+                         (messy_room ?to)
+                    )
+                
+                )
 
         )
     )
@@ -61,15 +80,14 @@
 
         :parameters (?loc - location ?k - key)
 
-        :precondition (and
-
-            ; IMPLEMENT ME
-
+        :precondition (and (hero-at ?loc)
+                           (key-at ?k ?loc)
+                           (not (hero_has_key ?k))
+                           (not (messy_room ?loc))
         )
 
-        :effect (and
-
-            ; IMPLEMENT ME
+        :effect (and (hero_has_key ?key)
+                     (not (key_at ?loc))
 
         )
     )
@@ -82,15 +100,13 @@
 
         :parameters (?loc - location ?k - key)
 
-        :precondition (and
-
-            ; IMPLEMENT ME
+        :precondition (and (hero_has_key ?k)
+                           (hero_at ?loc)
 
         )
 
-        :effect (and
-
-            ; IMPLEMENT ME
+        :effect (and (not (hero_has_key ?k))
+                     (key_at ?loc)
 
         )
     )
@@ -108,15 +124,26 @@
 
         :parameters (?loc - location ?cor - corridor ?col - colour ?k - key)
 
-        :precondition (and
-
-            ; IMPLEMENT ME
+        :precondition (and (hero_has_key ?k)
+                           (not (useless_key ?k))
+                           (corridor_locked ?cor ?col)
+                           (key_colour ?k ?col)
+                           (hero_at ?loc)
+                           (corridor_connected_to ?cor ?loc)
 
         )
 
-        :effect (and
-
-            ; IMPLEMENT ME
+        :effect (and (not (corridor_locked ?cor ?col))
+                     (when (two_use_key ?k)
+                        (and (not (two_use_key ?k))
+                             (one_use_key ?k)
+                        )
+                     )
+                     (when (one_use_key ?k)
+                        (and (not (one_use_key ?k))
+                             (useless_key ?k)
+                        )
+                     )
 
         )
     )
@@ -129,15 +156,11 @@
 
         :parameters (?loc - location)
 
-        :precondition (and
-
-            ; IMPLEMENT ME
-
+        :precondition (and (hero_at ?loc)
+                      (messy_room ?loc)
         )
 
-        :effect (and
-
-            ; IMPLEMENT ME
+        :effect ((not (messy_room ?loc))
 
         )
     )
