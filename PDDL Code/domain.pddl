@@ -24,7 +24,6 @@
         (hero_has_key ?k - key)
         (hero_move_to ?to)
         (key_at ?k - key ?loc - location)
-        (key_uses_left ?k - key)
         (key_colour ?k - key ?col - colour)
         (multi_use_key ?k - key)
         (two_use_key ?k - key)
