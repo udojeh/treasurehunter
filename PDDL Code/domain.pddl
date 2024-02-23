@@ -22,6 +22,7 @@
         ; One predicate given for free!
         (hero_at ?loc - location)
         (hero_has_key ?k - key)
+        (hands_full)
         (key_at ?k - key ?loc - location)
         (key_colour ?k - key ?col - colour)
         (multi_use_key ?k - key)
@@ -80,11 +81,12 @@
 
         :precondition (and (hero_at ?loc)
                            (key_at ?k ?loc)
-                           (not (hero_has_key ?k))
+                           (not (hands_full))
                            (not (messy_room ?loc))
         )
 
         :effect (and (hero_has_key ?k)
+                     (hands_full)
                      (not (key_at ?k ?loc))
 
         )
@@ -104,6 +106,7 @@
         )
 
         :effect (and (not (hero_has_key ?k))
+                     (not (hands_full))
                      (key_at ?k ?loc)
 
         )
