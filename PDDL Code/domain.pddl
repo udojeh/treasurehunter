@@ -84,7 +84,7 @@
                            (not (messy_room ?loc))
         )
 
-        :effect (and (hero_has_key ?key)
+        :effect (and (hero_has_key ?k)
                      (not (key_at ?k ?loc))
 
         )
