@@ -53,6 +53,7 @@
 
         :precondition (and (hero_at ?from)
                            (corridor_connection ?cor ?from ?to)
+                           (not (corridor_collapsed ?cor))
                            (not (corridor_locked_state ?cor))
 
         )
