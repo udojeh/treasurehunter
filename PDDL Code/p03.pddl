@@ -62,10 +62,10 @@
     (corridor_connected_to c3233 loc-3-2)
     (corridor_connected_to c3233 loc-3-3)
     
-    (corridor_connection c1323 loc-1-3 loc-3-2)
-    (corridor_connection c1323 loc-3-2 loc-1-3)
+    (corridor_connection c1323 loc-1-3 loc-2-3)
+    (corridor_connection c1323 loc-2-3 loc-1-3)
     (corridor_connected_to c1323 loc-1-3)
-    (corridor_connected_to c1323 loc-3-2)
+    (corridor_connected_to c1323 loc-2-3)
     
     (corridor_connection c2333 loc-2-3 loc-3-3)
     (corridor_connection c2333 loc-3-3 loc-2-3)
